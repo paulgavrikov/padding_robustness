@@ -4,7 +4,7 @@ Paul Gavrikov, Janis Keuper
 
 [![CC BY-SA 4.0][cc-by-sa-shield]][cc-by-sa]
 
-Presented at: [Conference]
+Presented at: BRAVO Workshop @ ICCV 2023
 
 [Paper](https://openaccess.thecvf.com/content/ICCV2023W/BRAVO/html/Gavrikov_On_the_Interplay_of_Convolutional_Padding_and_Adversarial_Robustness_ICCVW_2023_paper.html) | [ArXiv](http://arxiv.org/abs/2308.06612)
 

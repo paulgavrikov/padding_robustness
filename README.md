@@ -18,6 +18,27 @@ Abstract: *It is common practice to apply padding prior to convolution operation
 
 <!-- ![Hero Image]() -->
 
+## Reproduce our results
+
+You can train CIFAR-10 networks via (no adversarial regularization):
+
+```bash
+python tinytorchtrainer/train.py --dataset_dir <DATADIR> --checkpoints last --model <MODEL> --dataset cifar10  --num_workers 4 --max_epochs 75 --scheduler cosine --seed 0
+```
+
+To use adversarial training: 
+```bash
+python tinytorchtrainer/train.py --dataset_dir <DATADIR> --adv_train y --adv_train_attack FGSM --adv_train_attack_extras "{'epsilons': 8/255.}" --adv_val_attack LinfPGD --adv_val_attack_extras "{'epsilons': 8/255.}" --checkpoints "best" --checkpoints_metric "val/rob_acc" --model <MODEL> --dataset cifar10 --num_workers 4 --max_epochs 75 --scheduler cosine --seed 0
+
+```
+
+The copied [tinytorchtrainer](https://github.com/paulgavrikov/tinytorchtrainer/) model loader is patched to load models with requested kernel sizes and padding modes directly from the model string (but only for selected model families!!), e.g., `openlth_resnet_20_16_paddingreflect_k7`loads a ResNet-20-16 with reflect padding, and a 7x7 kernel size. The kernel size can be any odd integer, while the following padding modes are implemented: `"zeros", "reflect", "replicate", "circular"`. To train a model without padding, do not pass the `padding<...>` arg and use `nopad` instead. You can also omit args to use the network defaults.
+
+Finally you can measure the performance via:
+```bash
+python make_adv_examples.py <PATH_TO_CHECKPOINT>/last.ckpt
+```
+This will automatically load the correct model from a tinytorchtrainer created checkpoint, evaluate the attacks under all combinations of L2/Linf norms and low/high attack budgets, and save the results into a `adv_examples_{attack}_{norm}_{budget}.pt` checkpoint in the model checkpoint directory.
 
 ## Citation 
 
